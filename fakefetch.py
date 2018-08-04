@@ -66,8 +66,10 @@ def osrel(): #find OS release name / distro
 		osrel = "Void Linux"
 	elif 'ubuntu' in open("/etc/os-release").read():
 		osrel = "Ubuntu Linux"	
-	elif 'debian' in open("/etc/os-release").read():
+	elif 'ID=debian' in open("/etc/os-release").read():
 		osrel = "Debian Linux"
+	elif 'ID=devuan' in open("/etc/os-release").read():
+		osrel = "Devuan Linux"
 	elif 'gentoo' in open("/etc/os-release").read():
 		osrel = "Gentoo Linux"
 	elif 'clover' in open("/etc/os-release").read():
@@ -88,6 +90,8 @@ def desktop(): #find desktop environment
 		desktop = "Gnome"
 	elif 'Xfce' in desktop:
 		desktop = "Xfce4"
+	elif 'xfce' in desktop:
+		desktop = "Xfce4"
 	elif 'Plasma' in desktop:
 		desktop = "KDE Plasma"
 	elif 'LXDE' in desktop:
@@ -101,6 +105,8 @@ def disart(): #get correct distro art
 		print(void_logo)
 	elif osrel == "Debian Linux":
 		print(debian_logo)
+	elif osrel == "Devuan Linux":
+		print(devuan_logo)
 	elif osrel == "Ubuntu Linux":
 		print(ubuntu_logo)
 	elif osrel == "Gentoo Linux":
@@ -282,17 +288,39 @@ arch_logo = """
  `++:.                           `-/+/
  .`                                 `/
  """.format(user,osrel,arch,kernel,desktop)
+
+
+devuan_logo = """
+\033[35m  ..,,;;;::;,..                   
+           `':ddd;:,. 
+                 `'dPPd:,. 
+                     `:b$$b`. 
+                        'P$$$d`    \033[34m[\033[39m{}\033[34m]
+                         \033[35m.$$$$$`   \033[34m[OS]:\033[39m {} {}
+                         \033[35m;$$$$$P   \033[34m[Kernel]:\033[39m {} 
+                      \033[35m.:P$$$$$$`   \033[34m[DE]:\033[39m {}
+                  \033[35m.,:b$$$$$$$;' 
+             .,:dP$$$$$$$$b:' 		\033[40m  \033[41m  \033[42m  \033[43m  \033[44m  \033[45m  \033[46m  \033[47m \033[48m \033[49m \033[35m
+      .,:;db$$$$$$$$$$Pd'` 
+ ,db$$$$$$$$$$$$$$b:'` 
+:$$$$$$$$$$$$b:'` 
+ `$$$$$bd:''` 
+   `'''` 
+
+
+""".format(user,osrel,arch,kernel,desktop)
+
 # -------- DISTROS NOT FOUND -------- 
 
 no_logo = """
 \033[31mE: distro not found!\033[39m 
-make an issue at 'https://github.com/glyps/fakefetch' to get it added
+make an issue at 'https://github.com/jackthebaptust/fakefetch' to get it added
 """
 
 # -------- ARGS -------- 
 
 parser = argparse.ArgumentParser()
-parser.add_argument('-d','--distro', choices=['arch','void','gentoo','trisquel','ubuntu','debian','cloveros'], help='Choose which distro you want to display')
+parser.add_argument('-d','--distro', choices=['arch','void','gentoo','trisquel','ubuntu','debian','devuan','cloveros'], help='Choose which distro you want to display')
 args = parser.parse_args()
 if args.distro == "void":
 	print(void_logo)
@@ -305,6 +333,9 @@ elif args.distro == "trisquel":
 
 elif args.distro == "debian":
     print(debian_logo)
+
+elif args.distro == 'devuan':
+    print(devuan_logo)
 
 elif args.distro == "ubuntu":
 	print(ubuntu_logo)
